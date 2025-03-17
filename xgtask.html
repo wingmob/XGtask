@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, max-width:800px">
+    <title>字体与背景颜色调整</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            flex-direction: column; /* 垂直居中 */
+            text-align: center; /* 文本水平居中 */
+            background-color: #f5e7d3; /* 米黄色背景 */
+            color: #8b0000; /* 绛红色字体 */
+        }
+
+        /* 图片样式 */
+        img {
+            margin: 20px 0;
+            max-width: 100%; /* 确保图片响应式 */
+        }
+
+        /* 动画内容样式 */
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div id="text">这是一段渐显的文字。</div>
+    <img id="image" src="https://via.placeholder.com/400" alt="示例图片">
+    <div id="section1">第一段内容。</div>
+    <div id="section2">第二段内容。</div>
+    <div id="section3">第三段内容。</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        // 使用 GSAP 实现动画
+        gsap.from("#text", { opacity: 0, duration: 1, delay: 0.5 });
+        gsap.from("#image", { x: -200, opacity: 0, duration: 1, delay: 1 });
+        gsap.from("#section1", { opacity: 0, y: 20, duration: 1, delay: 1.5 });
+        gsap.from("#section2", { opacity: 0, y: 20, duration: 1, delay: 2 });
+        gsap.from("#section3", { opacity: 0, y: 20, duration: 1, delay: 2.5 });
+    </script>
+</body>
+</html>
