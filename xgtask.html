@@ -2,53 +2,123 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, max-width:800px">
-    <title>字体与背景颜色调整</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文化自信</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     <style>
-        /* 全局样式 */
+        :root {
+            --crimson: #8b0000;
+            --parchment: #f5e7d3;
+        }
+
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 1rem;
+            background: var(--parchment);
+            color: var(--crimson);
             display: flex;
-            justify-content: center; /* 水平居中 */
-            align-items: center; /* 垂直居中 */
-            flex-direction: column; /* 垂直居中 */
-            text-align: center; /* 文本水平居中 */
-            background-color: #f5e7d3; /* 米黄色背景 */
-            color: #8b0000; /* 绛红色字体 */
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* 图片样式 */
-        img {
-            margin: 20px 0;
-            max-width: 100%; /* 确保图片响应式 */
+        /* 紧凑文本容器 */
+        .text-container {
+            max-width: 320px;
+            margin: 0 auto;
+            padding: 0 1rem;
         }
 
-        /* 动画内容样式 */
-        .box {
-            width: 100px;
-            height: 100px;
-            background-color: #3498db;
+        /* 文字区块样式 */
+        .text-block {
+            line-height: 1.3;
+            margin: 0.5rem 0;
+            opacity: 0;
+            text-align: justify;
+            text-justify: inter-ideograph;
+        }
+
+        /* 书法字体定义 */
+        .bold-font {
+            font-family: 'ZCOOL XiaoWei', cursive;
+            font-size: 1.8rem;
+            letter-spacing: -1px;
+        }
+        .body-font {
+            font-family: 'Zhi Ma Xing', cursive;
+            font-size: 1.3rem;
+            line-height: 1.4;
+        }
+
+        /* 特殊强调样式 */
+        #keyword {
+            font-size: 2.2rem;
+            text-align: center;
+            margin: 1rem 0;
+            letter-spacing: 2px;
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 380px) {
+            .bold-font { font-size: 1.6rem; }
+            .body-font { font-size: 1.1rem; }
+            #keyword { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
-    <div id="text">这是一段渐显的文字。</div>
-    <img id="image" src="https://via.placeholder.com/400" alt="示例图片">
-    <div id="section1">第一段内容。</div>
-    <div id="section2">第二段内容。</div>
-    <div id="section3">第三段内容。</div>
+    <div class="text-container">
+        <div class="text-block bold-font" id="title1"></div>
+        <div class="text-block bold-font" id="title2"></div>
+        
+        <div class="text-block body-font" id="line1"></div>
+        <div class="text-block body-font" id="line2"></div>
+        
+        <div class="text-block" id="keyword"></div>
+        
+        <div class="text-block body-font" id="line3"></div>
+        
+        <div class="text-block body-font" id="quote1"></div>
+        <div class="text-block body-font" id="quote2"></div>
+    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script>
-        // 使用 GSAP 实现动画
-        gsap.from("#text", { opacity: 0, duration: 1, delay: 0.5 });
-        gsap.from("#image", { x: -200, opacity: 0, duration: 1, delay: 1 });
-        gsap.from("#section1", { opacity: 0, y: 20, duration: 1, delay: 1.5 });
-        gsap.from("#section2", { opacity: 0, y: 20, duration: 1, delay: 2 });
-        gsap.from("#section3", { opacity: 0, y: 20, duration: 1, delay: 2.5 });
+        // 原始文本内容
+        const contents = [
+            { id: "title1", text: "一个「文化自信」的世界" },
+            { id: "title2", text: "长什么样？" },
+            { id: "line1", text: "当甲骨文在龟甲上裂出第一道文明闪电，" },
+            { id: "line2", text: "青铜鼎在礼乐中铸成最初的华夏轮廓。" },
+            { id: "keyword", text: "文化自信", class: "bold-font" },
+            { id: "line3", text: "便已镌刻进基因螺旋。" },
+            { id: "quote1", text: "「你的存在不是偶然，" },
+            { id: "quote2", text: "是河图洛书演算五千年的必然」" }
+        ];
+
+        // 初始化文本
+        contents.forEach(item => {
+            const el = document.getElementById(item.id);
+            el.textContent = item.text;
+            if(item.class) el.classList.add(item.class);
+        });
+
+        // 紧凑排版动画
+        gsap.to(".text-block", {
+            opacity: 1,
+            duration: 0.8,
+            stagger: {
+                each: 0.3,
+                from: "start",
+                ease: "power2.out"
+            },
+            onComplete: () => {
+                // 自动调整字间距
+                document.querySelectorAll('.text-block').forEach(block => {
+                    block.style.wordSpacing = `${Math.min(-1, -block.clientWidth/100)}px`;
+                });
+            }
+        });
     </script>
 </body>
 </html>
