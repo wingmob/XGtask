@@ -28,8 +28,11 @@
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            text-align: center;
             margin: 40px 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
         }
 
         .content.active {
@@ -37,11 +40,29 @@
             transform: translateY(0);
         }
 
-        /* 不同文本类型的样式 */
+        /* 多元排版系统 */
+        .layout-vertical {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .layout-horizontal {
+            flex-direction: row;
+            justify-content: space-between;
+            text-align: left;
+        }
+
+        .text-column {
+            flex: 1 1 45%;
+            min-width: 280px;
+        }
+
+        /* 文本样式 */
         .question {
             font-size: 2.2rem;
             color: #3a2c1a;
             font-weight: 700;
+            text-align: center;
         }
 
         .poem {
@@ -70,6 +91,15 @@
         }
 
         @media (max-width: 480px) {
+            .layout-horizontal {
+                flex-direction: column;
+            }
+            
+            .text-column {
+                flex: 1 1 100%;
+                min-width: 0;
+            }
+            
             .question { font-size: 1.8rem; }
             .emphasis { font-size: 1.5rem; }
             .poem { font-size: 1rem; }
@@ -79,31 +109,44 @@
 <body>
     <div class="container">
         <!-- 第一屏 -->
-        <div class="content question active">
+        <div class="content question active layout-vertical">
             一个“文化自信”的世界<br>长什么样？
         </div>
 
-        <!-- 后续内容 -->
-        <div class="content poem">
+        <!-- 横向排版 -->
+        <div class="content layout-horizontal">
+            <div class="text-column poem">
 当甲骨文在龟甲上裂出第一道文明闪电<br>
-青铜鼎在礼乐中铸成最初的华夏轮廓<br>
+青铜鼎在礼乐中铸成最初的华夏轮廓
+            </div>
+            <div class="text-column emphasis">
 文化自信<br>
 便已镌刻进基因螺旋
+            </div>
         </div>
 
-        <div class="content emphasis">
+        <!-- 垂直排版 -->
+        <div class="content layout-vertical">
+            <div class="emphasis">
 “你的存在不是偶然，<br>是河图洛书演算五千年的必然”
+            </div>
         </div>
 
-        <div class="content modern">
+        <!-- 混合排版 -->
+        <div class="content layout-horizontal">
+            <div class="text-column modern">
 文化自信是爱自己<br>
-是爱青铜器上的饕餮纹裂变出当代美学<br>
+是爱青铜器上的饕餮纹裂变出当代美学
+            </div>
+            <div class="text-column modern">
 爱敦煌壁画里飞天的衣袂化作卫星轨迹<br>
 爱你的双手<br>
 它曾写下《史记》也敲出5G代码
+            </div>
         </div>
 
-        <div class="content modern" style="font-size: 1rem;">
+        <!-- 纯文本块 -->
+        <div class="content modern layout-vertical">
 文化自信是当“西化”成为解剖刀<br>
 将文明剖成“先进”（西方文明）与“病灶”（非西方文明）——<br>
 这剂19世纪的殖民药方<br>
@@ -119,7 +162,7 @@
         // 初始化第一个内容
         contents[0].classList.add('active');
 
-        // 滚动到底部触发加载
+        // 滚动加载
         window.addEventListener('scroll', () => {
             if (isAnimating) return;
             
@@ -143,7 +186,7 @@
             }, 100);
         }
 
-        // 手动触发首次检查
+        // 初始触发
         setTimeout(() => {
             window.dispatchEvent(new Event('scroll'));
         }, 500);
